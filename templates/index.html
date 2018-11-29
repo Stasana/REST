@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+ <head>
+   <title>users api</title>
+   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+ </head>
+<body>
+<div id="jsonresp" style="margin-top: 100px">
+   <table class="table table-bordered" id="user_table">
+                            <thead>
+                            <tr>
+                                <th>id</th>
+                                <th>First name</th>
+                                <th>Email</th>
+                                <th></th>
+                            </tr>
+                            </thead>
+                            <tbody id="list">
+
+                            </tbody>
+                        </table>
+</div>
+    <script type="text/javascript">
+        function deleteUser(id) {
+            var xhr = new XMLHttpRequest();
+            xhr.open("DELETE", "http://127.0.0.1:8000/users/"+id, true);
+            xhr.setRequestHeader("Content-Type", "application/json");
+            xhr.send();
+        }
+
+
+       var xhr = new XMLHttpRequest();
+    xhr.open("GET", "http://127.0.0.1:8000/users/", false);
+    xhr.setRequestHeader("Content-Type", "application/json");
+    xhr.send();
+    users = JSON.parse(xhr.response);
+    for (var i =0; i<users.length; i++) {
+        $('#list').append("<tr class='user'>" +
+            "<th class='id' scope='row'></th>" +
+            "<th class='name'></th>" +
+            "<th class='email'></th>" +
+            "<th class='delete'></th>" +
+            "</tr>");
+        id = users[i].id;
+        first_name = users[i].username;
+
+        email = users[i].email;
+
+        $('#list tr:last .id').append(id);
+        $('#list tr:last .name').append(first_name);
+        $('#list tr:last .email').append(email);
+        $('#list tr:last .delete').append( "<input type='button' onclick='deleteUser("+id+")' value='Delete'/>");
+    }
+
+
+    </script>
+</body>
+</html>
